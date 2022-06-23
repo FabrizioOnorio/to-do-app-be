@@ -34,7 +34,7 @@ app.post("/api/lists", async (req, res) => {
 
 app.put("/api/lists/:listId", async (req, res) => {
 	try {
-		await db.updateList(req.body, req.params.listId);
+		await db.addTodoList(req.body, req.params.listId);
 		res.end();
 	} catch (err) {
 		console.log("Unexpected error", err);
@@ -49,6 +49,15 @@ app.put("/api/lists/todo/:listId", async (req, res) => {
 		console.log("Unexpected error", err);
 	}
 });
+
+app.delete("/api/lists/:listId", async (req, res) => {
+  try{
+    const results = await db.deleteTodo(req.params.listId);
+		res.status(204).json(results);
+  } catch (err) {
+    console.log("Unexpected error", err);
+  }
+})
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
