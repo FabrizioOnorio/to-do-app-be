@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const db = require("./db");
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 3001;
+app.set("port", process.env.PORT || 5000);
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -51,14 +51,14 @@ app.put("/api/lists/todo/:listId", async (req, res) => {
 });
 
 app.delete("/api/lists/:listId", async (req, res) => {
-  try{
-    const results = await db.deleteTodo(req.params.listId);
+	try {
+		const results = await db.deleteTodo(req.params.listId);
 		res.status(204).json(results);
-  } catch (err) {
-    console.log("Unexpected error", err);
-  }
-})
+	} catch (err) {
+		console.log("Unexpected error", err);
+	}
+});
 
-app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+app.listen(app.get("port"), () => {
+	console.log("Node app is running on port", app.get("port"));
 });
