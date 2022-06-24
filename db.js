@@ -12,6 +12,7 @@ const getAllLists = async () => {
 	const database = client.db("to-do-app");
 	const collection = database.collection("lists");
 	const result = await collection.find().toArray();
+  client.close();
 	return result;
 };
 
@@ -20,6 +21,7 @@ const addList = async (newList) => {
 	const database = client.db("to-do-app");
 	const collection = database.collection("lists");
 	const result = await collection.insertOne(newList);
+  client.close();
 	return result;
 };
 
@@ -31,6 +33,7 @@ const addTodoList = async (newItem, listId) => {
 	const result = await collection.updateOne(query, {
 		$push: { items: newItem },
 	});
+  client.close();
 	return result;
 };
 
@@ -45,7 +48,8 @@ const updateTodo = async (item, listId) => {
 	const todoIndex = todos.indexOf(todo);
 	todos.splice(todoIndex, 1, item);
 	await collection.updateMany(query, { $set: { items: todos } });
-	return result;
+  client.close();
+  return result;
 };
 
 const deleteTodo = async (listId) => {
@@ -54,6 +58,7 @@ const deleteTodo = async (listId) => {
 	const collection = database.collection("lists");
 	const query = { listId };
 	const result = await collection.deleteOne(query);
+  client.close();
 	return result;
 };
 
